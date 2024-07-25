@@ -13,9 +13,9 @@ router.post('/register', async (req, res) => {
     if (!user) {
         const newUser = new User({ first_name, last_name, email, password });
         await newUser.save();
-        res.json({ message: 'User created successfully' });
+        res.json({ message: 'Usuario creado con exito' });
     } else {
-        return res.status(401).json({ message: 'User already exists' });
+        return res.status(401).json({ message: 'Usuario ya existente' });
     }
 });
 
@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user || !bcrypt.compareSync(password, user.password)) {
-        return res.status(401).json({ message: 'Invalid email or password' });
+        return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.cookie('jwt', token, { httpOnly: true });
