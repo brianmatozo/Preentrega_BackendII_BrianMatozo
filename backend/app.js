@@ -4,10 +4,9 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const passport = require('./config/passport');
 const sessionRouter = require('./routes/session');
+const homeRouter = require('./routes/home');
 
 const app = express();
-
-// console.log({ MONGODB_URL: process.env.MONGODB_URI });
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGODB_URL)
@@ -19,6 +18,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use('/api/sessions', sessionRouter);
+app.use('/', homeRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
